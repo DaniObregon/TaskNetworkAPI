@@ -1,16 +1,20 @@
 package com.danio.tasknetwork.service;
 
+import com.danio.tasknetwork.exceptions.ToDoExceptions;
 import com.danio.tasknetwork.mapper.TaskInDTOToTask;
 import com.danio.tasknetwork.persistence.entity.Task;
+import com.danio.tasknetwork.persistence.entity.TaskStatus;
 import com.danio.tasknetwork.persistence.repository.TaskRepository;
 import com.danio.tasknetwork.service.dto.TaskInDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
-
-    //TODO: probar campos con final.. en el video usa final, tambien usa constructon en vez de @Autowired
-    //@Autowired
     private TaskRepository taskRepository;
     private TaskInDTOToTask mapper;
 
@@ -19,8 +23,34 @@ public class TaskService {
         this.mapper = mapper;
     }
 
-    public Task createTask(TaskInDTO taskInDTO){
+    public Task createTask(TaskInDTO taskInDTO) {
         Task task = mapper.map(taskInDTO);
         return this.taskRepository.save(task);
+    }
+
+    public List<Task> findAll() {
+        return this.taskRepository.findAll();
+    }
+
+    public List<Task> findAllByTaskStatus(TaskStatus taskStatus) {
+        return this.taskRepository.findAllByTaskStatus(taskStatus);
+    }
+
+    @Transactional
+    public void updateTaskAsFinished(Long id) {
+        Optional<Task> optionalTask = this.taskRepository.findById(id);
+        if(optionalTask.isEmpty()) {
+            throw new ToDoExceptions("Task not found", HttpStatus.NOT_FOUND);
+        }
+        this.taskRepository.maskTaskAsFinished(id);
+    }
+
+    @Transactional
+    public void deleteTaskById(Long id) {
+        Optional<Task> optionalTask = this.taskRepository.findById(id);
+        if(optionalTask.isEmpty()) {
+            throw new ToDoExceptions("Task not found", HttpStatus.NOT_FOUND);
+        }
+        this.taskRepository.deleteById(id);
     }
 }

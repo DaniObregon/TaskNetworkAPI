@@ -19,4 +19,7 @@ public class Task {
     private LocalDateTime eta;
     private boolean finished;
     private TaskStatus taskStatus;
+
+    @OneToMany
+    private Developer developer;
 }

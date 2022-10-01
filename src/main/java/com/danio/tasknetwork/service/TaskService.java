@@ -1,7 +1,10 @@
 package com.danio.tasknetwork.service;
 
+import com.danio.tasknetwork.exceptions.DeveloperNotFoundException;
+import com.danio.tasknetwork.exceptions.TaskNotFoundException;
 import com.danio.tasknetwork.exceptions.ToDoExceptions;
 import com.danio.tasknetwork.mapper.TaskInDTOToTask;
+import com.danio.tasknetwork.persistence.entity.Developer;
 import com.danio.tasknetwork.persistence.entity.Task;
 import com.danio.tasknetwork.persistence.entity.TaskStatus;
 import com.danio.tasknetwork.persistence.repository.TaskRepository;
@@ -30,6 +33,10 @@ public class TaskService {
 
     public List<Task> findAll() {
         return this.taskRepository.findAll();
+    }
+
+    public Task getTaskById(Long id) throws TaskNotFoundException {
+        return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     public List<Task> findAllByTaskStatus(TaskStatus taskStatus) {

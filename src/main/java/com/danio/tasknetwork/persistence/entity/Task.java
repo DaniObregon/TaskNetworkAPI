@@ -20,6 +20,6 @@ public class Task {
     private boolean finished;
     private TaskStatus taskStatus;
 
-    @OneToMany
+    @ManyToOne
     private Developer developer;
 }

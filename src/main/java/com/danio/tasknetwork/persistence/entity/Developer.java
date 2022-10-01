@@ -18,7 +18,7 @@ public class Developer {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "task_id")
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks = new ArrayList();
 
     public void addTask(Task task){
         this.tasks.add(task);

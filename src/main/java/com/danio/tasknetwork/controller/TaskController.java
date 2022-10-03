@@ -3,11 +3,13 @@ package com.danio.tasknetwork.controller;
 import com.danio.tasknetwork.persistence.entity.Task;
 import com.danio.tasknetwork.persistence.entity.TaskStatus;
 import com.danio.tasknetwork.service.TaskService;
-import com.danio.tasknetwork.service.dto.TaskInDTO;
+import com.danio.tasknetwork.dto.TaskDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tasks")
@@ -19,13 +21,21 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody TaskInDTO taskInDTO) {
-        return this.taskService.createTask(taskInDTO);
+    public Task createTask(@RequestBody TaskDTO taskDTO) {
+        return this.taskService.createTask(taskDTO);
     }
 
+//    @GetMapping
+//    public List<Task> findAll(){
+//        return this.taskService.findAll();
+//    }
+
+    //TODO: ARREGLAR ESTO!!!! Devolver el json correspondiente
     @GetMapping
-    public List<Task> findAll(){
-        return this.taskService.findAll();
+    public ResponseEntity<List<TaskDTO>> findAll(){
+        List<Task> tasks = taskService.findAll();
+        List<TaskDTO> taskDTOS = tasks.stream().map(TaskDTO::from).collect(Collectors.toList());
+        return new ResponseEntity<>(taskDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/status/{status}")

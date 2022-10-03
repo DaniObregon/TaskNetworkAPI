@@ -1,14 +1,12 @@
 package com.danio.tasknetwork.service;
 
-import com.danio.tasknetwork.exceptions.DeveloperNotFoundException;
 import com.danio.tasknetwork.exceptions.TaskNotFoundException;
 import com.danio.tasknetwork.exceptions.ToDoExceptions;
 import com.danio.tasknetwork.mapper.TaskInDTOToTask;
-import com.danio.tasknetwork.persistence.entity.Developer;
 import com.danio.tasknetwork.persistence.entity.Task;
 import com.danio.tasknetwork.persistence.entity.TaskStatus;
 import com.danio.tasknetwork.persistence.repository.TaskRepository;
-import com.danio.tasknetwork.service.dto.TaskInDTO;
+import com.danio.tasknetwork.dto.TaskDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +24,8 @@ public class TaskService {
         this.mapper = mapper;
     }
 
-    public Task createTask(TaskInDTO taskInDTO) {
-        Task task = mapper.map(taskInDTO);
+    public Task createTask(TaskDTO taskDTO) {
+        Task task = mapper.TaskDtoToTask(taskDTO);
         return this.taskRepository.save(task);
     }
 

@@ -1,5 +1,6 @@
 package com.danio.tasknetwork.persistence.entity;
 
+import com.danio.tasknetwork.dto.TaskDTO;
 import lombok.Data;
 
 import javax.persistence.*;

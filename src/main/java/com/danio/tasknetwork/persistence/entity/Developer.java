@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "Developer")
 public class Developer {
 
     @Id
@@ -17,7 +18,7 @@ public class Developer {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "developer_id")
     private List<Task> tasks = new ArrayList();
 
     public void addTask(Task task){

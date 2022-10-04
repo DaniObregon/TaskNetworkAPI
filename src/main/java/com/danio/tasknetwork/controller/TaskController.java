@@ -25,12 +25,6 @@ public class TaskController {
         return this.taskService.createTask(taskDTO);
     }
 
-//    @GetMapping
-//    public List<Task> findAll(){
-//        return this.taskService.findAll();
-//    }
-
-    //TODO: ARREGLAR ESTO!!!! Devolver el json correspondiente
     @GetMapping
     public ResponseEntity<List<TaskDTO>> findAll(){
         List<Task> tasks = taskService.findAll();

@@ -55,4 +55,14 @@ public class DeveloperService {
         developer.addTask(task);
         return developer;
     }
+
+    @Transactional
+    public Developer removeTaskFromDeveloper(Long developerId, Long taskId) {
+        Developer developer = this.getDeveloperById(developerId);
+        Task task = taskService.getTaskById(taskId);
+        if (developer.getTasks().contains(task)) {
+            developer.removeTask(task);
+        } else throw new TaskNotFoundException(taskId);
+        return developer;
+    }
 }

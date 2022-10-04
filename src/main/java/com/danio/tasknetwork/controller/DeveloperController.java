@@ -24,12 +24,12 @@ public class DeveloperController {
     }
 
     @PostMapping
-    public Developer createDeveloper(@RequestBody DeveloperDTO developerDTO){
+    public Developer createDeveloper(@RequestBody DeveloperDTO developerDTO) {
         return this.developerService.addDeveloper(developerDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<DeveloperDTO>> getDevelopers(){
+    public ResponseEntity<List<DeveloperDTO>> getDevelopers() {
         List<Developer> developers = developerService.getDevelopers();
         List<DeveloperDTO> developerDTOS = developers.stream().map(DeveloperDTO::from).collect(Collectors.toList());
         return new ResponseEntity<>(developerDTOS, HttpStatus.OK);
@@ -37,9 +37,15 @@ public class DeveloperController {
 
     @PostMapping("{developerId}/tasks/{taskId}/add")
     public ResponseEntity<DeveloperDTO> addTaskToDeveloper(@PathVariable final Long developerId,
-                                                           @PathVariable final Long taskId)
-            throws TaskNotFoundException, TaskIsAlreadyAssignedException {
+                                                           @PathVariable final Long taskId) {
         Developer developer = developerService.addTaskToDeveloper(developerId, taskId);
+        return new ResponseEntity<>(DeveloperDTO.from(developer), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{developerId}/tasks/{taskId}/remove")
+    public ResponseEntity<DeveloperDTO> removeTaskFromDeveloper(@PathVariable final Long developerId,
+                                                                @PathVariable final Long taskId) {
+        Developer developer = developerService.removeTaskFromDeveloper(developerId, taskId);
         return new ResponseEntity<>(DeveloperDTO.from(developer), HttpStatus.OK);
     }
 }
